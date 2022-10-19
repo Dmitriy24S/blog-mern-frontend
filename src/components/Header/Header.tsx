@@ -25,7 +25,7 @@ const Header = () => {
 
   // Get user info to display username in header
   const userData = useSelector((state: RootState) => state.user.userData)
-  const [isUserMenuOpen, setIsUserMenuOpen] = useState(true)
+  const [isUserMenuOpen, setIsUserMenuOpen] = useState(false)
 
   return (
     <header className='bg-white'>
@@ -74,7 +74,7 @@ const Header = () => {
               </button>
               {/* Dropdown user menu - user name & user logout button */}
               {isUserMenuOpen && (
-                <div className='absolute top-full right-0 p-4 py-6 bg-white shadow-md flex flex-col gap-4'>
+                <div className='dropdown-user-menu absolute top-full right-0 p-4 py-6 bg-white shadow-md flex flex-col gap-4 z-20 rounded-md'>
                   {/* Username */}
                   <div className='font-semibold text-center pb-4 border-b'>
                     {/* {userData && userData.fullName} */}
