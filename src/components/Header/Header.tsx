@@ -33,8 +33,10 @@ const Header = () => {
         <div className='header-logo'>
           <Link
             to={'/'}
-            className='bg-black text-white hover:bg-black/80 py-2 px-2 sm:px-8 rounded font-black tracking-wider block'
+            className='bg-black text-white hover:bg-black/80 py-2 px-2 sm:px-8 rounded font-black tracking-wider block max-w-min sm:max-w-max sm:text-left text-center'
             // block - otherwise mobile uneven block
+            // on mobile: 2 row logo text (max-w-min, text-center)
+            // desktop: 1 row logo text
           >
             MERN BLOG
           </Link>
