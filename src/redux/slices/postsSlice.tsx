@@ -47,6 +47,15 @@ export const fetchPosts = createAsyncThunk<PostType[]>('posts/fetchPosts', async
   return data
 })
 
+export const fetchPopularPosts = createAsyncThunk<PostType[]>(
+  'posts/fetchPopularPosts',
+  async () => {
+    const { data }: { data: PostType[] } = await axios.get('/postspopular')
+    console.log('async fetch redux slice, popular posts sort', data)
+    return data
+  }
+)
+
 // ! NO TYPE ERRORS?
 export const fetchTags = createAsyncThunk('posts/fetchTags', async () => {
   const { data } = await axios.get('/posts')
@@ -81,6 +90,13 @@ export const postsSlice = createSlice({
       const data: PostType[] = [...action.payload]
       state.posts.items = data
       console.log('fetch posts redux', data, 111111)
+      state.posts.status = 'done'
+    })
+    // fetchPopularPosts
+    builder.addCase(fetchPopularPosts.fulfilled, (state, action) => {
+      const data: PostType[] = [...action.payload]
+      state.posts.items = data
+      console.log('fetch posts redux, popular sort', data, 111111)
       state.posts.status = 'done'
     })
     // fetchTags

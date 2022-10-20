@@ -1,12 +1,37 @@
-import React from 'react'
+import React, { useState } from 'react'
+import { fetchPopularPosts, fetchPosts } from '../redux/slices/postsSlice'
+import { useAppDispatch } from '../redux/store'
 
 const Tabs = () => {
+  const dispatch = useAppDispatch()
+  const [activeTab, setActiveTab] = useState('new')
+
   return (
     <div className='flex gap-4 mb-6'>
-      <button className='rounded-none border-0 border-b-2 border-indigo-500 text-indigo-500 hover:text-indigo-400'>
+      <button
+        className={`rounded-md rounded-b-none border-0 hover:text-indigo-400
+        focus:outline-none focus-visible:outline-blue-500
+        ${activeTab === 'new' && 'border-b-2 border-indigo-500 text-indigo-500'}`}
+        onClick={() => {
+          setActiveTab('new')
+          dispatch(fetchPosts())
+        }}
+      >
         New
       </button>
-      <button className='rounded-none border-0 hover:text-indigo-400'>Popular</button>
+      <button
+        className={`rounded-md rounded-b-none border-0 hover:text-indigo-400
+        focus-visible:outline-blue-500 focus:outline-none
+        ${activeTab === 'popular' && 'border-b-2 border-indigo-500 text-indigo-500'}`}
+        onClick={(e) => {
+          // const target = e.target as HTMLElement
+          // target.blur()
+          setActiveTab('popular')
+          dispatch(fetchPopularPosts())
+        }}
+      >
+        Popular
+      </button>
     </div>
   )
 }
