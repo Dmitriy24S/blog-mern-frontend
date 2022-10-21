@@ -32,7 +32,7 @@ const Post = ({
             Edit
           </Link>
           <button
-            className='bg-white shadow'
+            className='bg-white shadow rounded-md text-center px-4 py-3 hover:text-red-600'
             onClick={() => {
               if (window.confirm('Are you sure you want to delete this post?')) {
                 dispatch(fetchRemovePost(_id))
@@ -44,20 +44,49 @@ const Post = ({
           </button>
         </div>
       )}
-      {imageUrl && (
-        <img
-          // className={clsx(styles.image, { [styles.imageFull]: isFullPost })}
-          className='w-full h-full min-h-[175px] max-h-[324px] object-cover'
-          src={imageUrl}
-          alt={title}
-        />
+      {/* if blog post preview - use post image as link to full post page / on full page -> remove link for blog image */}
+      {isFullPost ? (
+        imageUrl && (
+          <img
+            // className={clsx(styles.image, { [styles.imageFull]: isFullPost })}
+            className='w-full h-full min-h-[175px] max-h-[324px] object-cover'
+            src={imageUrl}
+            alt={title}
+          />
+        )
+      ) : (
+        <Link to={`/posts/${_id}`}>
+          {/* {imageUrl && (
+            <img
+              // className={clsx(styles.image, { [styles.imageFull]: isFullPost })}
+              className='w-full h-full min-h-[175px] max-h-[324px] object-cover'
+              src={imageUrl}
+              alt={title}
+            />
+          )} */}
+          {imageUrl ? (
+            <img
+              // className={clsx(styles.image, { [styles.imageFull]: isFullPost })}
+              className='w-full h-full min-h-[175px] max-h-[324px] object-cover'
+              src={imageUrl}
+              alt={title}
+            />
+          ) : (
+            // placholder div instead of img?
+            <div className='w-full h-full min-h-[175px] max-h-[324px] bg-pink-300'></div>
+          )}
+        </Link>
       )}
+
       <div className='post-content p-6 flex items-start'>
         {/* <img src={user.avatarUrl} alt='' className='mt-1.5 mr-3.5' /> */}
         <div className='bg-slate-600 text-white font-extrabold rounded-full min-h-[2rem] min-w-[2rem] mt-1.5 mr-3.5 text-center leading-8'>
-          D
+          {/* D */}
+          {user.fullName ? user.fullName[0] : 'A'}
         </div>
-        <div className='flex flex-col gap-3 overflow-auto break-words'>
+        {/* <div className='flex flex-col gap-3 overflow-auto break-words'> */}
+        {/* overflow-auto - focus cuts off sides of outline */}
+        <div className='flex flex-col gap-3 break-words'>
           <div className='blog-top mb-1'>
             <div className='name font-bold'>{user.fullName}</div>
             <div className='time text-gray-500 text-sm'>{createdAt}</div>
@@ -75,13 +104,14 @@ const Post = ({
             <p>
               {body}
               {/* Read more link on post preview  */}
-              <span className='ml-1'>
-                {body.length > 149 && (
-                  <Link to={`/posts/${_id}`} className='font-bold hover:text-indigo-600 text-end'>
-                    ...Read more
-                  </Link>
-                )}
-              </span>
+              {body.length > 149 && (
+                <Link
+                  to={`/posts/${_id}`}
+                  className='font-bold hover:text-indigo-600 inline-block ml-1 mt-1'
+                >
+                  ...Read more
+                </Link>
+              )}
             </p>
           ) : (
             // ! markdown transforms '...' text -> not markdown preview text?
