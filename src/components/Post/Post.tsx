@@ -46,13 +46,16 @@ const Post = ({
       )}
       {/* if blog post preview - use post image as link to full post page / on full page -> remove link for blog image */}
       {isFullPost ? (
-        imageUrl && (
+        imageUrl ? (
           <img
             // className={clsx(styles.image, { [styles.imageFull]: isFullPost })}
-            className='w-full h-full min-h-[175px] max-h-[324px] object-cover'
+            className='w-full h-full min-h-[190px] sm:min-h-[275px] max-h-[324px] object-cover'
             src={imageUrl}
             alt={title}
           />
+        ) : (
+          // placholder div instead of img?
+          <div className='w-full h-full min-h-[190px] sm:min-h-[275px] max-h-[324px] bg-pink-300'></div>
         )
       ) : (
         <Link to={`/posts/${_id}`}>
@@ -67,13 +70,13 @@ const Post = ({
           {imageUrl ? (
             <img
               // className={clsx(styles.image, { [styles.imageFull]: isFullPost })}
-              className='w-full h-full min-h-[175px] max-h-[324px] object-cover'
+              className='w-full h-full min-h-[190px] sm:min-h-[275px] max-h-[324px] object-cover'
               src={imageUrl}
               alt={title}
             />
           ) : (
             // placholder div instead of img?
-            <div className='w-full h-full min-h-[175px] max-h-[324px] bg-pink-300'></div>
+            <div className='w-full h-full min-h-[190px] sm:min-h-[275px] max-h-[324px] bg-pink-300'></div>
           )}
         </Link>
       )}
