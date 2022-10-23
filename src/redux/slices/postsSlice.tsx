@@ -19,13 +19,18 @@ export interface PostType {
   isEditable: boolean
 }
 
+interface TagsType {
+  _id: string
+  count: number
+}
+
 export interface PostsSliceInitialStateType {
   posts: {
     items: PostType[]
     status: string
   }
   tags: {
-    items: string[]
+    items: TagsType[]
     status: string
   }
 }
@@ -57,9 +62,52 @@ export const fetchPopularPosts = createAsyncThunk<PostType[]>(
 )
 
 // ! NO TYPE ERRORS?
-export const fetchTags = createAsyncThunk('posts/fetchTags', async () => {
-  const { data } = await axios.get('/posts')
-  console.log('async fetch redux slice', data)
+export const fetchTopTags = createAsyncThunk('posts/fetchTopTags', async () => {
+  const { data } = await axios.get('/tags')
+  console.log('async fetch redux slice, tags', data)
+  // becomes -> tags.items: Array(10)
+  //   [
+  //     {
+  //         "_id": "test",
+  //         "count": 2
+  //     },
+  //     {
+  //         "_id": "tag 2",
+  //         "count": 2
+  //     },
+  //     {
+  //         "_id": "react",
+  //         "count": 2
+  //     },
+  //     {
+  //         "_id": "tutorial",
+  //         "count": 1
+  //     },
+  //     {
+  //         "_id": "test no img",
+  //         "count": 1
+  //     },
+  //     {
+  //         "_id": "test img2",
+  //         "count": 1
+  //     },
+  //     {
+  //         "_id": "test img",
+  //         "count": 1
+  //     },
+  //     {
+  //         "_id": "tag 3",
+  //         "count": 1
+  //     },
+  //     {
+  //         "_id": "tag 1",
+  //         "count": 1
+  //     },
+  //     {
+  //         "_id": "node",
+  //         "count": 1
+  //     }
+  // ]
   return data
 })
 
@@ -100,7 +148,7 @@ export const postsSlice = createSlice({
       state.posts.status = 'done'
     })
     // fetchTags
-    builder.addCase(fetchTags.fulfilled, (state, action) => {
+    builder.addCase(fetchTopTags.fulfilled, (state, action) => {
       const data = [...action.payload]
       state.tags.items = data
       state.tags.status = 'done'
