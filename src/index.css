@@ -14,6 +14,9 @@
   -moz-osx-font-smoothing: grayscale;
   -webkit-text-size-adjust: 100%;
   text-size-adjust: 100%;
+
+  /* always in include scrollbar to avoid content page width jump when open page with/without scrollbar? */
+  /* scrollbar-gutter: stable; */
 }
 
 #root {
@@ -31,8 +34,10 @@ body {
   margin: 0;
   min-width: 320px;
   min-height: 100vh;
-  /* overscroll-behavior-x: contain; */
+  /* prevent browser return/back page action when swiping horizontaly (tags list) */
   overscroll-behavior-x: none;
+  /* always in include scrollbar to avoid content page width jump when open page with/without scrollbar? */
+  overflow-y: scroll;
 }
 
 h1 {
