@@ -1,5 +1,5 @@
 // import type { PayloadAction } from '@reduxjs/toolkit'
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
+import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
 import axios from '../../axios/axios'
 
 export interface PostType {
@@ -28,6 +28,7 @@ export interface PostsSliceInitialStateType {
   posts: {
     items: PostType[]
     status: string
+    activeTag: number | null
   }
   tags: {
     items: TagsType[]
@@ -38,7 +39,8 @@ export interface PostsSliceInitialStateType {
 const initialState: PostsSliceInitialStateType = {
   posts: {
     items: [],
-    status: 'loading'
+    status: 'loading',
+    activeTag: null
   },
   tags: {
     items: [],
@@ -57,6 +59,15 @@ export const fetchPopularPosts = createAsyncThunk<PostType[]>(
   async () => {
     const { data }: { data: PostType[] } = await axios.get('/postspopular')
     console.log('async fetch redux slice, popular posts sort', data)
+    return data
+  }
+)
+
+export const fetchPostsByTag = createAsyncThunk(
+  'posts/fetchPostsByTag',
+  async (tagName: string) => {
+    const { data }: { data: PostType[] } = await axios.get(`/tags/${tagName}`)
+    console.log('async fetch redux slice', data)
     return data
   }
 )
@@ -125,12 +136,10 @@ export const postsSlice = createSlice({
   name: 'posts',
   initialState,
   reducers: {
-    // decrement: (state) => {
-    //   state.value -= 1
-    // },
-    // incrementByAmount: (state, action: PayloadAction<number>) => {
-    //   state.value += action.payload
-    // },
+    setActiveTag: (state, action: PayloadAction<number | null>) => {
+      console.log('action set active tag redux:', action)
+      state.posts.activeTag = action.payload
+    }
   },
   extraReducers: (builder) => {
     // fetchPosts
@@ -168,9 +177,16 @@ export const postsSlice = createSlice({
       const id = String(action.meta.arg)
       state.posts.items = state.posts.items.filter((item) => item._id !== id)
     })
+    // fetchPostsByTag
+    builder.addCase(fetchPostsByTag.fulfilled, (state, action) => {
+      const data: PostType[] = [...action.payload]
+      state.posts.items = data
+      console.log('fetch posts by tag redux', data, 111111)
+      state.posts.status = 'done'
+    })
   }
 })
 
 // Action creators are generated for each case reducer function
-// export const {fetchPosts} = postsSlice.actions
+export const { setActiveTag } = postsSlice.actions
 export default postsSlice.reducer

@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { fetchPopularPosts, fetchPosts } from '../redux/slices/postsSlice'
+import { fetchPopularPosts, fetchPosts, setActiveTag } from '../redux/slices/postsSlice'
 import { useAppDispatch } from '../redux/store'
 
 const Tabs = () => {
@@ -15,6 +15,7 @@ const Tabs = () => {
         onClick={() => {
           setActiveTab('new')
           dispatch(fetchPosts())
+          dispatch(setActiveTag(null)) // remove selected tag, show all posts sorted by new
         }}
       >
         New
@@ -28,6 +29,7 @@ const Tabs = () => {
           // target.blur()
           setActiveTab('popular')
           dispatch(fetchPopularPosts())
+          dispatch(setActiveTag(null)) // remove selected tag, show all posts sorted by popularity/view count
         }}
       >
         Popular
