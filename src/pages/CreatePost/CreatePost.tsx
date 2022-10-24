@@ -230,7 +230,9 @@ const CreatePost = () => {
         // process.env.REACT_APP_API_URL
         // <img src={`http://localhost:4444/${imageUrl}`} alt='Uploaded' className='min-h-[300px]' />
         <img
-          src={`${process.env.REACT_APP_API_URL}/${imageUrl}`}
+          // src={`${process.env.REACT_APP_API_URL}/${imageUrl}`}
+          // src="https://mern-blog-backend-2.herokuapp.com//uploads/1.jpg"
+          src={`${process.env.REACT_APP_API_URL}${imageUrl}`}
           alt='Uploaded'
           className='min-h-[300px]'
         />
