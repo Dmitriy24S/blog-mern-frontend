@@ -1,10 +1,16 @@
 /* eslint-disable multiline-ternary */
 import React from 'react'
 import ReactMarkdown from 'react-markdown'
-import { Link } from 'react-router-dom'
+import { useSelector } from 'react-redux'
+import { Link, useNavigate } from 'react-router-dom'
 import remarkGfm from 'remark-gfm'
-import { fetchRemovePost, PostType } from '../../redux/slices/postsSlice'
-import { useAppDispatch } from '../../redux/store'
+import {
+  fetchPostsByTag,
+  fetchRemovePost,
+  PostType,
+  setActiveTagName
+} from '../../redux/slices/postsSlice'
+import { RootState, useAppDispatch } from '../../redux/store'
 
 const Post = ({
   _id,
@@ -19,6 +25,15 @@ const Post = ({
   isEditable
 }: PostType) => {
   const dispatch = useAppDispatch()
+  const navigate = useNavigate()
+
+  const activeTagName = useSelector((state: RootState) => state.posts.posts.activeTagName)
+
+  const handlePostTagClick = (tagName: string) => {
+    navigate(`/`)
+    dispatch(fetchPostsByTag(tagName))
+    dispatch(setActiveTagName(tagName))
+  }
 
   return (
     <article className={`relative bg-white rounded shadow-sm ${isFullPost ? 'mt-12' : ''}`}>
@@ -134,7 +149,14 @@ const Post = ({
             <ul className='flex gap-4 flex-wrap text-gray-500'>
               {tags.map((tag, idx) => (
                 <li key={idx}>
-                  <button className='hover:bg-gray-100'># {tag}</button>
+                  <button
+                    className={`hover:bg-gray-100 ${
+                      activeTagName === tag ? 'bg-indigo-400 text-white hover:bg-indigo-400' : ''
+                    }`}
+                    onClick={() => handlePostTagClick(tag)}
+                  >
+                    # {tag}
+                  </button>
                 </li>
               ))}
             </ul>

@@ -1,13 +1,18 @@
 import React, { useEffect } from 'react'
 import { useSelector } from 'react-redux'
-import { fetchPosts, fetchPostsByTag, fetchTopTags, setActiveTag } from '../redux/slices/postsSlice'
+import {
+  fetchPosts,
+  fetchPostsByTag,
+  fetchTopTags,
+  setActiveTagName
+} from '../redux/slices/postsSlice'
 import { RootState, useAppDispatch } from '../redux/store'
 
 const TagsBlock = () => {
   const dispatch = useAppDispatch()
   const { items } = useSelector((state: RootState) => state.posts.tags)
-  const activeTag = useSelector((state: RootState) => state.posts.posts.activeTag)
-  console.log({ activeTag })
+  const activeTagName = useSelector((state: RootState) => state.posts.posts.activeTagName)
+  console.log({ activeTagName })
 
   console.log('TagsBlock tags:', items)
   // items: Array(10)
@@ -59,9 +64,21 @@ const TagsBlock = () => {
     dispatch(fetchTopTags())
   }, [])
 
+  const clearFilter = () => {
+    dispatch(fetchPosts())
+    dispatch(setActiveTagName(null))
+  }
+
   return (
     <div className='bg-white p-4 shadow-sm rounded'>
-      <h3 className='font-bold text-xl mb-5 px-4'>Top Tags</h3>
+      <div className='flex items-center justify-between mb-3'>
+        <h3 className='font-bold text-xl py-2.5 px-4'>Top Tags</h3>
+        {activeTagName !== null && (
+          <button className='underline text-indigo-500 hover:text-indigo-400' onClick={clearFilter}>
+            Clear filter
+          </button>
+        )}
+      </div>
       {/* overscroll-x contain/none set to body in css? prevent browser back button action on horizontal scroll swipe? */}
       <ul className='flex overflow-x-scroll pb-1 snap-mandatory snap-x overscroll-x-contain md:flex-col'>
         {items.map((tag, index) => {
@@ -71,17 +88,21 @@ const TagsBlock = () => {
             <li className='snap-start'>
               <button
                 className={`hover:bg-gray-100 text-start min-w-max w-full ${
-                  activeTag === index ? 'bg-indigo-200  hover:bg-indigo-200' : ''
+                  // activeTag === index ?
+                  activeTagName === tag._id ? 'bg-indigo-400 text-white  hover:bg-indigo-400' : ''
                 }`}
                 onClick={() => {
-                  if (activeTag === index) {
-                    // if clicking on currently active tag -> means unselected it -> show all posts sorted by new and remove active tag
+                  // if (activeTag === index) {
+                  if (activeTagName === tag._id) {
+                    // if clicking on currently active tag -> means unselected it -> show all posts sorted by new and remove active tag:
                     dispatch(fetchPosts())
-                    dispatch(setActiveTag(null))
+                    // dispatch(setActiveTag(null))
+                    dispatch(setActiveTagName(null))
                   } else {
-                    // if new tag clicked -> set it as active tag -> fetch show posts by selected tag
+                    // if new tag clicked -> set it as active tag -> fetch show posts by selected tag:
                     dispatch(fetchPostsByTag(tag._id))
-                    dispatch(setActiveTag(index))
+                    // dispatch(setActiveTag(index))
+                    dispatch(setActiveTagName(tag._id))
                   }
                 }}
               >

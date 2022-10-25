@@ -28,7 +28,7 @@ export interface PostsSliceInitialStateType {
   posts: {
     items: PostType[]
     status: string
-    activeTag: number | null
+    activeTagName: string | null
   }
   tags: {
     items: TagsType[]
@@ -40,7 +40,7 @@ const initialState: PostsSliceInitialStateType = {
   posts: {
     items: [],
     status: 'loading',
-    activeTag: null
+    activeTagName: null
   },
   tags: {
     items: [],
@@ -136,9 +136,9 @@ export const postsSlice = createSlice({
   name: 'posts',
   initialState,
   reducers: {
-    setActiveTag: (state, action: PayloadAction<number | null>) => {
-      console.log('action set active tag redux:', action)
-      state.posts.activeTag = action.payload
+    setActiveTagName: (state, action: PayloadAction<string | null>) => {
+      console.log('action set active tag name redux:', action)
+      state.posts.activeTagName = action.payload
     }
   },
   extraReducers: (builder) => {
@@ -188,5 +188,5 @@ export const postsSlice = createSlice({
 })
 
 // Action creators are generated for each case reducer function
-export const { setActiveTag } = postsSlice.actions
+export const { setActiveTagName } = postsSlice.actions
 export default postsSlice.reducer
