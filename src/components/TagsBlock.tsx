@@ -80,7 +80,7 @@ const TagsBlock = () => {
         )}
       </div>
       {/* overscroll-x contain/none set to body in css? prevent browser back button action on horizontal scroll swipe? */}
-      <ul className='flex overflow-x-scroll pb-1 snap-mandatory snap-x overscroll-x-contain md:flex-col'>
+      <ul className='flex overflow-x-auto pb-1 snap-mandatory snap-x overscroll-x-contain md:flex-col'>
         {items.map((tag, index) => {
           console.log('tag', tag)
 
