@@ -1,4 +1,18 @@
-# Getting Started with Create React App
+# MERN Blog - Frontend
+
+![Design preview for Blog MERN react app](./design/preview.png)
+
+MERN Blog. Created with React, Tailwind CSS, MongoDB, Mongoose, Express, Heroku
+
+[Live Demo](https://blog-mern-frontend-liard.vercel.app/) 👈
+
+## Updated Repos
+
+Frontend: https://github.com/Dmitriy24S/blog-mern-frontend
+
+Backend: https://github.com/Dmitriy24S/blog-mern-backend
+
+## Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
