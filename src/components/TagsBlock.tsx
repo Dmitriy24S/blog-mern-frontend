@@ -81,16 +81,16 @@ const TagsBlock = () => {
       </div>
       {/* overscroll-x contain/none set to body in css? prevent browser back button action on horizontal scroll swipe? */}
       <ul className='flex overflow-x-auto pb-1 snap-mandatory snap-x overscroll-x-contain md:flex-col'>
-        {items.map((tag, index) => {
-          console.log('tag', tag)
-
+        {items.length > 0 ? items.map((tag, index) => {
+          // console.log('tag', tag)
           return (
             <li className='snap-start'>
               <button
-                className={`hover:bg-gray-100 text-start min-w-max w-full ${
+                // ! safari: min-w-max w-full -> overlap mobile long tags?
+                className={`hover:bg-gray-100 text-start w-max ${
                   // activeTag === index ?
-                  activeTagName === tag._id ? 'bg-indigo-400 text-white  hover:bg-indigo-400' : ''
-                }`}
+                  activeTagName === tag._id ? 'bg-indigo-400 text-white hover:bg-indigo-400' : ''
+                  }`}
                 onClick={() => {
                   // if (activeTag === index) {
                   if (activeTagName === tag._id) {
@@ -111,7 +111,8 @@ const TagsBlock = () => {
               </button>
             </li>
           )
-        })}
+        }) : <p className='px-4'> Loading tags  </p>}
+
       </ul>
     </div>
   )
